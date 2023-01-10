@@ -5,6 +5,7 @@
 .DS_Store
 /build
 app/build
+BmpWaterMark/build
 watermark/build
 /captures
 .externalNativeBuild
