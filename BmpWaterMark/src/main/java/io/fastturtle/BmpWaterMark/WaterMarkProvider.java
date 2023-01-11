@@ -69,6 +69,9 @@ public class WaterMarkProvider {
         Paint paint = new Paint();
         paint.setColor(ContextCompat.getColor(ctx, color));
 
+		/*
+		* Follows binary search to find the text size which fits bitmap diagonal properly
+		*/
         float hi = (float) diagonalInPixels;
         float lo = 2;
         final float threshold = 0.5f;
