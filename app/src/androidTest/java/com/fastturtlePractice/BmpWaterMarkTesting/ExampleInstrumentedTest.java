@@ -1,4 +1,4 @@
-package com.fastturtle.BmpWaterMark;
+package com.fastturtlePractice.BmpWaterMarkTesting;
 
 import android.content.Context;
 

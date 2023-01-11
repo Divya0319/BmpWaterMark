@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,33 +46,50 @@ public class WaterMarkProvider {
 
         double heightByWidth = h / (double) w;
         double angle = Math.toDegrees(Math.atan(heightByWidth));
+
+        double diagonalInPixels = Math.sqrt((h * h) + (w * w));
         Log.d("Angle", angle + "");
-        float sizeInsp;
+//        float sizeInsp;
 
-        if (angle > 49) {
-            sizeInsp = 110f;
-        } else if (angle >= 44) {
-            sizeInsp = 94f;
-        } else if (angle >= 38) {
-            sizeInsp = 86f;
-        } else if (angle >= 35) {
-            sizeInsp = 78f;
-        } else {
-            sizeInsp = 68f;
-        }
-
-        // Convert the dips to pixels
-        int sizeInPixels = sp2px(sizeInsp);
+//        if (angle > 49) {
+//            sizeInsp = 110f;
+//        } else if (angle >= 44) {
+//            sizeInsp = 94f;
+//        } else if (angle >= 38) {
+//            sizeInsp = 86f;
+//        } else if (angle >= 35) {
+//            sizeInsp = 78f;
+//        } else {
+//            sizeInsp = 68f;
+//        }
+//
+//        // Convert the dips to pixels
+//        int sizeInPixels = sp2px(sizeInsp);
 
         Paint paint = new Paint();
         paint.setColor(ContextCompat.getColor(ctx, color));
-        paint.setTextSize(sizeInPixels);
+
+        float hi = (float) diagonalInPixels;
+        float lo = 2;
+        final float threshold = 0.5f;
+        while ((hi - lo) > threshold) {
+            float size = (hi + lo) / 2;
+            paint.setTextSize(size);
+            if (paint.measureText(watermarkText) >= diagonalInPixels)
+                hi = size; // too big
+            else
+                lo = size; // too small
+        }
+        // Use lo so that we undershoot rather than overshoot
+
+        paint.setTextSize((float) (lo - (0.11 * lo)));
+
         paint.setAntiAlias(true);
         paint.setAlpha(alpha);
         paint.setUnderlineText(false);
-        canvas.rotate((float) (angle), 10, 150);
-        canvas.drawText(watermarkText, 10, 150, paint);
-        canvas.rotate(-(float) (angle), 10, 150);
+        canvas.rotate((float) (angle), 0, 60);
+        canvas.drawText(watermarkText, 0, 60, paint);
+        canvas.rotate(-(float) (angle), 0, 60);
 
         return src;
     }
@@ -278,8 +296,13 @@ public class WaterMarkProvider {
         return new int[]{displayMetrics.widthPixels, displayMetrics.heightPixels};
     }
 
-    public int sp2px(float spValue) {
-        final float fontScale = ctx.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5f);
+    public int sp2px(float sizeInDp) {
+        DisplayMetrics displayMetrics = ctx.getResources().getDisplayMetrics();
+        return Math.round(sizeInDp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    public int pixelsToDp(float px) {
+        DisplayMetrics displayMetrics = ctx.getResources().getDisplayMetrics();
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 }

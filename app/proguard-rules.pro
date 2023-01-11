@@ -19,8 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keepclassmembers class com.fastturtle.BmpWaterMark.responsemodels.** { *; }
--keepclassmembers class com.fastturtle.BmpWaterMark.activities.** { *; }
+-keepclassmembers class com.fastturtlePractice.BmpWaterMarkTesting.responsemodels.** { *; }
+-keepclassmembers class com.fastturtlePractice.BmpWaterMarkTesting.activities.** { *; }
 -keepattributes *Annotation*, Signature, Exception
 
 # below lines remove log statements from project before release

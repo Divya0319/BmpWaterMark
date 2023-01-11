@@ -40,7 +40,7 @@ dependencies {
     /**
      *  for scenario when module is a part of project
      */
-//    implementation project(path: ':BmpWaterMark')
+    implementation project(path: ':BmpWaterMark')
 
 
     /**
@@ -49,6 +49,6 @@ dependencies {
 //    implementation files('libs/watermark.aar')
 
 
-    implementation 'com.github.Divya0319:BmpWaterMark:1.0.1'
+//    implementation 'com.github.Divya0319:BmpWaterMark:1.0.1'
 
 }
