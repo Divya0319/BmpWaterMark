@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements BitmapCompression
     @Override
     public void onBitmapCompressed(Bitmap bitmap) {
 
-        bitmap = wmp.generateWaterMarkedBitmap(bitmap, "This is a watermark", R.color.blue_200, 50);
+        bitmap = wmp.generateWaterMarkedBitmap(bitmap, "This is a watermark");
         ivPickedImage.setImageBitmap(bitmap);
     }
 
