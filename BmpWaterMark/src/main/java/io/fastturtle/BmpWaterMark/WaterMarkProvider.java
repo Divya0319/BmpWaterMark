@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat;
  * @Date: 08-Jan-23
  */
 
-@SuppressWarnings("ConstantConditions")
 public class WaterMarkProvider {
     private Context context;
 
@@ -33,10 +32,6 @@ public class WaterMarkProvider {
     private int xCoordinate;
     private int yCoordinate;
 
-
-    /*
-        Provide context to constructor once
-     */
     public WaterMarkProvider(Builder builder) {
         this.context = builder.context;
         this.waterMarkedBitmap = builder.bitmap;
@@ -183,6 +178,7 @@ public class WaterMarkProvider {
         private final Context context;
         private final Bitmap bitmap;
         private final String waterMarkText;
+
         private int alpha = 50;
         private int textSize = -1;
         private double rotationAngle = -1.0D;
