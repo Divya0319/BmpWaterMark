@@ -43,7 +43,7 @@ afterEvaluate {
 
             groupId = 'io.fastturtle'
             artifactId = 'BmpWaterMark'
-            version = '1.0.1'
+            version = '1.0.9'
         }
 
     }
