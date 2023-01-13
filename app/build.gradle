@@ -46,9 +46,8 @@ dependencies {
     /**
      *  for scenario when module's aar file is placed in libs folder
      */
-//    implementation files('libs/watermark.aar')
+//    implementation files('libs/BmpWaterMark.aar')
 
-
-//    implementation 'com.github.Divya0319:BmpWaterMark:1.0.1'
+//    implementation 'com.github.Divya0319:BmpWaterMark:1.0.10'
 
 }

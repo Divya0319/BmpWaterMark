@@ -23,7 +23,7 @@ public class BitmapCompressionTask extends AsyncTask<Uri, Void, Bitmap> {
         Bitmap compressedBitmap = null;
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(contextRef.get().getContentResolver(), uris[0]);
-            compressedBitmap = Utils.getCompressedBitmap(bitmap, 300);
+            compressedBitmap = Utils.getCompressedBitmap(bitmap, 10000);
         } catch (IOException e) {
             e.printStackTrace();
         }
