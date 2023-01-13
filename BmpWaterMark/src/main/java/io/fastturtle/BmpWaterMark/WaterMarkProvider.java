@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 
 import androidx.annotation.ColorRes;
@@ -24,7 +25,7 @@ public class WaterMarkProvider {
     private final String waterMarkText;
 
     // optional parameters
-    private final int alpha;
+    private int alpha;
     private int textSize;
     private final double rotationAngle;
     private final @ColorRes
@@ -89,8 +90,16 @@ public class WaterMarkProvider {
 
         paint.setColor(ContextCompat.getColor(context, color));
 
-        String hindiText = context.getString(R.string.vastu);
+        // Range of Unicode - 0x0900 to 0x097F
+        boolean isHindi = false;
+        for (char c : waterMarkText.toCharArray()) {
+            if (Character.UnicodeBlock.of(c) == Character.UnicodeBlock.DEVANAGARI) {
+                isHindi = true;
+                break;
+            }
+        }
 
+        Log.d("Hindi?", isHindi + "");
         if (textSize == -1) {
             /*
              * Follows binary search to find the text size which fits bitmap diagonal properly
@@ -108,7 +117,7 @@ public class WaterMarkProvider {
             }
             // Use lo so that we undershoot rather than overshoot
 
-            if (waterMarkText.contains(hindiText)) {
+            if (isHindi) {
                 textSize = (int) (lo - (0.15 * lo));
             } else {
                 textSize = (int) (lo - (0.11 * lo));
@@ -120,28 +129,34 @@ public class WaterMarkProvider {
 
         paint.setAntiAlias(true);
         paint.setUnderlineText(false);
+        if (alpha <= 0) {
+            alpha = 5;
+        } else if (alpha > 255) {
+            alpha = 255;
+        }
         paint.setAlpha(alpha);
+        Log.d("Bitmap height", h + "");
 
         if (rotationAngle == -1.0D) {
 
-            if (waterMarkText.contains(hindiText)) {
+            if (isHindi) {
                 yCoordinate = 120;
             } else {
                 yCoordinate = 60;
             }
-            canvas.rotate((float) angleOfRotation, 0, yCoordinate);
-            canvas.drawText(waterMarkText, 0, yCoordinate, paint);
-            canvas.rotate(-((float) angleOfRotation), 0, yCoordinate);
+            canvas.rotate((float) angleOfRotation, xCoordinate, yCoordinate);
+            canvas.drawText(waterMarkText, xCoordinate, yCoordinate, paint);
+            canvas.rotate(-(float) (angleOfRotation), xCoordinate, yCoordinate);
 
         } else {
-            if (waterMarkText.contains(hindiText)) {
+            if (isHindi) {
                 yCoordinate = 120;
             } else {
                 yCoordinate = 60;
             }
-            canvas.rotate((float) rotationAngle, 0, yCoordinate);
-            canvas.drawText(waterMarkText, 0, yCoordinate, paint);
-            canvas.rotate(-((float) rotationAngle), 0, yCoordinate);
+            canvas.rotate((float) rotationAngle, xCoordinate, yCoordinate);
+            canvas.drawText(waterMarkText, xCoordinate, yCoordinate, paint);
+            canvas.rotate(-((float) rotationAngle), xCoordinate, yCoordinate);
         }
 
         return waterMarkedBitmap;

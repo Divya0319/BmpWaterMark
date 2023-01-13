@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
     <string name="app_name">Hello World</string>
-
+    <string name="hindi_text">यह एक वॉटरमार्क है</string>
+    <string name="english_text">This is a watermark</string>
 </resources>
