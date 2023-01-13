@@ -5,12 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 
 import androidx.annotation.ColorRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -21,100 +18,72 @@ import androidx.core.content.ContextCompat;
 
 @SuppressWarnings("ConstantConditions")
 public class WaterMarkProvider {
-    private Context ctx;
+    private Context context;
+
+    // required parameters
+    private Bitmap waterMarkedBitmap;
+    private String waterMarkText;
+
+    // optional parameters
+    private int alpha;
+    private int textSize;
+    private double rotationAngle;
+    private @ColorRes
+    int color;
+    private int xCoordinate;
+    private int yCoordinate;
 
 
     /*
         Provide context to constructor once
      */
-    public WaterMarkProvider(Context ctx) {
-        this.ctx = ctx;
+    public WaterMarkProvider(Builder builder) {
+        this.context = builder.context;
+        this.waterMarkedBitmap = builder.bitmap;
+        this.waterMarkText = builder.waterMarkText;
+        this.alpha = builder.alpha;
+        this.color = builder.color;
+        this.rotationAngle = builder.rotationAngle;
+        this.textSize = builder.textSize;
+        this.xCoordinate = builder.xCoordinate;
+        this.yCoordinate = builder.yCoordinate;
     }
 
-    /**
-     * @param src           - Bitmap to be watermarked
-     * @param watermarkText - text to be used for watermarking(should not be too small in character count)
-     * @return - watermarked bitmap
-     */
-    public Bitmap generateWaterMarkedBitmap(@NonNull Bitmap src, @NonNull String watermarkText) {
-
-        src = createScaledBitmapWithScreenWidth(src);
-        int w = src.getWidth();
-        int h = src.getHeight();
-
-        Canvas canvas = new Canvas(src);
-        canvas.drawBitmap(src, 0f, 0f, null);
-
-        double heightByWidth = h / (double) w;
-        double angle = Math.toDegrees(Math.atan(heightByWidth));
-
-        double diagonalInPixels = Math.sqrt((h * h) + (w * w));
-
-        Paint paint = new Paint();
-        paint.setColor(ContextCompat.getColor(ctx, R.color.red_for_watermark));
-
-        /*
-         * Follows binary search to find the text size which fits bitmap diagonal properly
-         */
-        float hi = (float) diagonalInPixels;
-        float lo = 2;
-        final float threshold = 0.5f;
-        while ((hi - lo) > threshold) {
-            float size = (hi + lo) / 2;
-            paint.setTextSize(size);
-            if (paint.measureText(watermarkText) >= diagonalInPixels)
-                hi = size; // too big
-            else
-                lo = size; // too small
-        }
-        // Use lo so that we undershoot rather than overshoot
-
-        String hindiText = ctx.getString(R.string.vastu);
-        if (watermarkText.contains(hindiText)) {
-            paint.setTextSize((float) (lo - (0.15 * lo)));
-        } else {
-            paint.setTextSize((float) (lo - (0.11 * lo)));
-        }
-
-
-        paint.setAntiAlias(true);
-        paint.setAlpha(50);
-        paint.setUnderlineText(false);
-        if (watermarkText.contains(hindiText)) {
-            canvas.rotate((float) (angle), 0, 120);
-            canvas.drawText(watermarkText, 0, 120, paint);
-            canvas.rotate(-(float) (angle), 0, 120);
-        } else {
-            canvas.rotate((float) (angle), 0, 60);
-            canvas.drawText(watermarkText, 0, 60, paint);
-            canvas.rotate(-(float) (angle), 0, 60);
-        }
-
-        return src;
+    public String getWaterMarkText() {
+        return waterMarkText;
     }
 
-    /**
-     * @param src           - Bitmap to be watermarked
-     * @param watermarkText - text to be used for watermarking(should not be too small in character count)
-     * @param textSizeInSp  - font size to be set for watermark (can be passed null for default behaviour)
-     * @param angle         - rotation angle for watermark(can be passed null for default behaviour)
-     * @param color         - color for watermark(must be a color defined in resources)
-     * @param alpha         - transparency for watermark(must be between 0-255, 0 being 100% transparent(invisible), and 255 means 0% transparent(fully visible))
-     * @param px            - x coordinate for starting of watermark text(if passed null, uses default position)
-     * @param py            - y coordinate for starting of watermark text(if passed null, uses default position)
-     * @return - watermarked bitmap
-     */
-    public Bitmap generateWaterMarkedBitmap(@NonNull Bitmap src, @NonNull String watermarkText,
-                                            @Nullable Integer textSizeInSp, @Nullable Double angle,
-                                            @Nullable @ColorRes Integer color, @Nullable Integer alpha,
-                                            @Nullable Integer px, @Nullable Integer py) {
+    public int getAlpha() {
+        return alpha;
+    }
 
-        src = createScaledBitmapWithScreenWidth(src);
-        int w = src.getWidth();
-        int h = src.getHeight();
+    public int getTextSize() {
+        return textSize;
+    }
 
-        Canvas canvas = new Canvas(src);
-        canvas.drawBitmap(src, 0f, 0f, null);
+    public double getRotationAngle() {
+        return rotationAngle;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public int getxCoordinate() {
+        return xCoordinate;
+    }
+
+    public int getyCoordinate() {
+        return yCoordinate;
+    }
+
+    public Bitmap getWaterMarkedBitmap() {
+        waterMarkedBitmap = createScaledBitmapWithScreenWidth(waterMarkedBitmap);
+        int w = waterMarkedBitmap.getWidth();
+        int h = waterMarkedBitmap.getHeight();
+
+        Canvas canvas = new Canvas(waterMarkedBitmap);
+        canvas.drawBitmap(waterMarkedBitmap, 0f, 0f, null);
 
         double heightByWidth = h / (double) w;
         double angleOfRotation = Math.toDegrees(Math.atan(heightByWidth));
@@ -122,14 +91,12 @@ public class WaterMarkProvider {
         double diagonalInPixels = Math.sqrt((h * h) + (w * w));
 
         Paint paint = new Paint();
-        if (color == null) {
-            paint.setColor(ContextCompat.getColor(ctx, R.color.red_for_watermark));
-        } else {
-            paint.setColor(ContextCompat.getColor(ctx, color));
-        }
-        String hindiText = ctx.getString(R.string.vastu);
 
-        if (textSizeInSp == null) {
+        paint.setColor(ContextCompat.getColor(context, color));
+
+        String hindiText = context.getString(R.string.vastu);
+
+        if (textSize == -1) {
             /*
              * Follows binary search to find the text size which fits bitmap diagonal properly
              */
@@ -139,79 +106,50 @@ public class WaterMarkProvider {
             while ((hi - lo) > threshold) {
                 float size = (hi + lo) / 2;
                 paint.setTextSize(size);
-                if (paint.measureText(watermarkText) >= diagonalInPixels)
+                if (paint.measureText(waterMarkText) >= diagonalInPixels)
                     hi = size; // too big
                 else
                     lo = size; // too small
             }
             // Use lo so that we undershoot rather than overshoot
 
-            if (watermarkText.contains(hindiText)) {
-                paint.setTextSize((float) (lo - (0.15 * lo)));
+            if (waterMarkText.contains(hindiText)) {
+                textSize = (int) (lo - (0.15 * lo));
             } else {
-                paint.setTextSize((float) (lo - (0.11 * lo)));
+                textSize = (int) (lo - (0.11 * lo));
             }
+            paint.setTextSize(textSize);
         } else {
-            paint.setTextSize(sp2px(textSizeInSp));
+            paint.setTextSize(sp2px(textSize));
         }
-
 
         paint.setAntiAlias(true);
         paint.setUnderlineText(false);
-        if (alpha == null) {
-            paint.setAlpha(50);
+        paint.setAlpha(alpha);
+
+        if (rotationAngle == -1.0D) {
+
+            if (waterMarkText.contains(hindiText)) {
+                yCoordinate = 120;
+            } else {
+                yCoordinate = 60;
+            }
+            canvas.rotate((float) angleOfRotation, 0, yCoordinate);
+            canvas.drawText(waterMarkText, 0, yCoordinate, paint);
+            canvas.rotate(-((float) angleOfRotation), 0, yCoordinate);
+
         } else {
-            paint.setAlpha(alpha);
+            if (waterMarkText.contains(hindiText)) {
+                yCoordinate = 120;
+            } else {
+                yCoordinate = 60;
+            }
+            canvas.rotate((float) rotationAngle, 0, yCoordinate);
+            canvas.drawText(waterMarkText, 0, yCoordinate, paint);
+            canvas.rotate(-((float) rotationAngle), 0, yCoordinate);
         }
 
-        if (angle == null) {
-            if (watermarkText.contains(hindiText)) {
-                if (px == null && py == null) {
-                    canvas.rotate((float) angleOfRotation, 0, 120);
-                    canvas.drawText(watermarkText, 0, 120, paint);
-                    canvas.rotate(-((float) angleOfRotation), 0, 120);
-                } else {
-                    canvas.rotate((float) angleOfRotation, px, py);
-                    canvas.drawText(watermarkText, px, py, paint);
-                    canvas.rotate(-((float) angleOfRotation), px, py);
-                }
-            } else {
-                if (px == null && py == null) {
-                    canvas.rotate((float) angleOfRotation, 0, 60);
-                    canvas.drawText(watermarkText, 0, 60, paint);
-                    canvas.rotate(-((float) angleOfRotation), 0, 60);
-                } else {
-                    canvas.rotate((float) angleOfRotation, px, py);
-                    canvas.drawText(watermarkText, px, py, paint);
-                    canvas.rotate(-((float) angleOfRotation), px, py);
-                }
-
-            }
-        } else {
-            if (watermarkText.contains(hindiText)) {
-                if (px == null && py == null) {
-                    canvas.rotate(angle.floatValue(), 0, 120);
-                    canvas.drawText(watermarkText, 0, 120, paint);
-                    canvas.rotate(-(angle.floatValue()), 0, 120);
-                } else {
-                    canvas.rotate(angle.floatValue(), px, py);
-                    canvas.drawText(watermarkText, px, py, paint);
-                    canvas.rotate(-(angle.floatValue()), px, py);
-                }
-            } else {
-                if (px == null && py == null) {
-                    canvas.rotate(angle.floatValue(), 0, 60);
-                    canvas.drawText(watermarkText, 0, 60, paint);
-                    canvas.rotate(-(angle.floatValue()), 0, 60);
-                } else {
-                    canvas.rotate(angle.floatValue(), px, py);
-                    canvas.drawText(watermarkText, px, py, paint);
-                    canvas.rotate(-(angle.floatValue()), px, py);
-                }
-            }
-        }
-
-        return src;
+        return waterMarkedBitmap;
     }
 
     /*
@@ -227,17 +165,71 @@ public class WaterMarkProvider {
 
     public int[] getScreenWidthAndHeight() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((AppCompatActivity) ctx).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        ((AppCompatActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return new int[]{displayMetrics.widthPixels, displayMetrics.heightPixels};
     }
 
     public float sp2px(float sizeInSp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                sizeInSp, ctx.getResources().getDisplayMetrics());
+                sizeInSp, context.getResources().getDisplayMetrics());
     }
 
     public int pixelsToDp(float px) {
-        DisplayMetrics displayMetrics = ctx.getResources().getDisplayMetrics();
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    public static class Builder {
+        private final Context context;
+        private final Bitmap bitmap;
+        private final String waterMarkText;
+        private int alpha = 50;
+        private int textSize = -1;
+        private double rotationAngle = -1.0D;
+        private @ColorRes
+        int color = R.color.red_for_watermark;
+        private int xCoordinate = 0;
+        private int yCoordinate;
+
+        public Builder(Context context, Bitmap bitmap, String waterMarkText) {
+            this.context = context;
+            this.bitmap = bitmap;
+            this.waterMarkText = waterMarkText;
+        }
+
+        public Builder setAlpha(int alpha) {
+            this.alpha = alpha;
+            return this;
+        }
+
+        public Builder setTextSize(int textSize) {
+            this.textSize = textSize;
+            return this;
+        }
+
+        public Builder setRotationAngle(double rotationAngle) {
+            this.rotationAngle = rotationAngle;
+            return this;
+        }
+
+        public Builder setColor(int color) {
+            this.color = color;
+            return this;
+        }
+
+        public Builder setxCoordinate(int xCoordinate) {
+            this.xCoordinate = xCoordinate;
+            return this;
+        }
+
+        public Builder setyCoordinate(int yCoordinate) {
+            this.yCoordinate = yCoordinate;
+            return this;
+        }
+
+        public WaterMarkProvider build() {
+            return new WaterMarkProvider(this);
+        }
+
     }
 }

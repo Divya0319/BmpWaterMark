@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements BitmapCompression
     AppCompatImageView ivPickedImage;
     ActivityResultLauncher<Intent> pickImageFromGalleryForResult;
     BitmapCompressionTask bitmapCompressionTask;
-    WaterMarkProvider wmp;
+    WaterMarkProvider.Builder watermarkBuilder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,14 +39,12 @@ public class MainActivity extends AppCompatActivity implements BitmapCompression
         btPickImage = findViewById(R.id.bt_pick_image);
         ivPickedImage = findViewById(R.id.pickedImage);
 
-        wmp = new WaterMarkProvider(this);
-
         pickImageFromGalleryForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         if (result.getData() != null) {
                             Uri selectedImageUri = result.getData().getData();
-                            if(selectedImageUri != null) {
+                            if (selectedImageUri != null) {
                                 bitmapCompressionTask = new BitmapCompressionTask(MainActivity.this, MainActivity.this);
                                 bitmapCompressionTask.execute(selectedImageUri);
                             }
@@ -62,7 +60,10 @@ public class MainActivity extends AppCompatActivity implements BitmapCompression
     @Override
     public void onBitmapCompressed(Bitmap bitmap) {
 
-        bitmap = wmp.generateWaterMarkedBitmap(bitmap, "This is a watermark");
+        watermarkBuilder = new WaterMarkProvider.Builder(this, bitmap, "This is a watermark");
+
+        WaterMarkProvider wmp = watermarkBuilder.build();
+        bitmap = wmp.getWaterMarkedBitmap();
         ivPickedImage.setImageBitmap(bitmap);
     }
 
