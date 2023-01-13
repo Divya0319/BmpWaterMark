@@ -17,19 +17,19 @@ import androidx.core.content.ContextCompat;
  */
 
 public class WaterMarkProvider {
-    private Context context;
+    private final Context context;
 
     // required parameters
     private Bitmap waterMarkedBitmap;
-    private String waterMarkText;
+    private final String waterMarkText;
 
     // optional parameters
-    private int alpha;
+    private final int alpha;
     private int textSize;
-    private double rotationAngle;
-    private @ColorRes
+    private final double rotationAngle;
+    private final @ColorRes
     int color;
-    private int xCoordinate;
+    private final int xCoordinate;
     private int yCoordinate;
 
     public WaterMarkProvider(Builder builder) {
