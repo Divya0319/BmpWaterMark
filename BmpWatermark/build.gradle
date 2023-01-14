@@ -36,15 +36,23 @@ dependencies {
 }
 
 // Maven publish script - (We only need this for local publish, to test the library)
-afterEvaluate {
-    android.libraryVariants.each { variant ->
-        publishing.publications.create(variant.name, MavenPublication) {
-            from components.findByName(variant.name)
+//afterEvaluate {
+//    android.libraryVariants.each { variant ->
+//        publishing.publications.create(variant.name, MavenPublication) {
+//            from components.findByName(variant.name)
+//
+//            groupId = 'io.fastturtle'
+//            artifactId = 'BmpWatermark'
+//            version = '1.0.9'
+//        }
+//
+//    }
+//}
 
-            groupId = 'io.fastturtle'
-            artifactId = 'BmpWatermark'
-            version = '1.0.9'
-        }
-
-    }
+ext {
+    PUBLISH_GROUP_ID = 'io.github.divya0319'
+    PUBLISH_VERSION = '1.1.0'
+    PUBLISH_ARTIFACT_ID = 'BmpWatermark'
 }
+
+apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
