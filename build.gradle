@@ -6,13 +6,17 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'io.github.gradle-nexus:publish-plugin:1.1.0'
 
     }
 }
 
+
 plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
+
 
 allprojects {
     repositories {
