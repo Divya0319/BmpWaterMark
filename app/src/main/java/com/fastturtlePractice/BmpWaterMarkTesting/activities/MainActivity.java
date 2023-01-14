@@ -62,8 +62,13 @@ public class MainActivity extends AppCompatActivity implements BitmapCompression
 
         watermarkBuilder = new WaterMarkProvider.Builder(this, bitmap, getString(R.string.hindi_text));
 
-        WaterMarkProvider wmp = watermarkBuilder.setColor(R.color.teal_200)
-                .setAlpha(255)
+        WaterMarkProvider wmp = watermarkBuilder
+                .setColor(io.fastturtle.BmpWaterMark.R.color.red_for_watermark)
+                .setAlpha(50)
+                .setxCoordinate(0)
+                .setyCoordinate(120)
+                .setTextSize(78)
+                .setRotationAngle(45)
                 .build();
         bitmap = wmp.getWaterMarkedBitmap();
         ivPickedImage.setImageBitmap(bitmap);

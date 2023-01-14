@@ -189,6 +189,10 @@ public class WaterMarkProvider {
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
+    /**
+     * Builder pattern
+     */
+
     public static class Builder {
         private final Context context;
         private final Bitmap bitmap;
