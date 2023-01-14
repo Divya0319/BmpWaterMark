@@ -20,3 +20,5 @@ allprojects {
         google()
     }
 }
+
+apply from: "${rootDir}/scripts/publish-root.gradle"
