@@ -45,11 +45,11 @@ afterEvaluate {
                 pom {
                     name = PUBLISH_ARTIFACT_ID
                     description = 'Watermark Bitmap in Android'
-                    url = 'https://github.com/Divya0319/BmpWaterMark'
+                    url = 'https://github.com/Divya0319/BmpWatermark'
                     licenses {
                         license {
-                            name = 'BmpWaterMark License'
-                            url = 'https://github.com/GetStream/stream-chat-android/blob/main/LICENSE'
+                            name = 'BmpWatermark License'
+                            url = 'https://github.com/Divya0319/BmpWatermark/blob/master/LICENSE'
                         }
                     }
                     developers {
@@ -64,9 +64,9 @@ afterEvaluate {
                     // Version control info - if you're using GitHub, follow the
                     // format as seen here
                     scm {
-                        connection = 'scm:git:github.com/Divya0319/BmpWaterMark.git'
-                        developerConnection = 'scm:git:ssh://github.com/Divya0319/BmpWaterMark.git'
-                        url = 'https://github.com/Divya0319/BmpWaterMark/tree/master'
+                        connection = 'scm:git:github.com/Divya0319/BmpWatermark.git'
+                        developerConnection = 'scm:git:ssh://github.com/Divya0319/BmpWatermark.git'
+                        url = 'https://github.com/Divya0319/BmpWatermark/tree/master'
                     }
                 }
             }
