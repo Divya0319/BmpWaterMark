@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.fastturtlePractice.BmpWaterMarkTesting.R;
 import com.fastturtlePractice.BmpWaterMarkTesting.helperClasses.BitmapCompressionTask;
 
-import io.fastturtle.BmpWaterMark.WaterMarkProvider;
+import io.fastturtle.BmpWatermark.WatermarkProvider;
 
 
 /**
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements BitmapCompression
     AppCompatImageView ivPickedImage;
     ActivityResultLauncher<Intent> pickImageFromGalleryForResult;
     BitmapCompressionTask bitmapCompressionTask;
-    WaterMarkProvider.Builder watermarkBuilder;
+    WatermarkProvider.Builder watermarkBuilder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements BitmapCompression
     @Override
     public void onBitmapCompressed(Bitmap bitmap) {
 
-        watermarkBuilder = new WaterMarkProvider.Builder(this, bitmap, getString(R.string.hindi_text));
+        watermarkBuilder = new WatermarkProvider.Builder(this, bitmap, getString(R.string.hindi_text));
 
-        WaterMarkProvider wmp = watermarkBuilder
-                .setColor(io.fastturtle.BmpWaterMark.R.color.red_for_watermark)
+        WatermarkProvider wmp = watermarkBuilder
+                .setColor(io.fastturtle.BmpWatermark.R.color.red_for_watermark)
                 .setAlpha(50)
                 .setxCoordinate(0)
                 .setyCoordinate(120)

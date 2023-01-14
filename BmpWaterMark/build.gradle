@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'io.fastturtle.BmpWaterMark'
+    namespace 'io.fastturtle.BmpWatermark'
     compileSdkVersion 32
 
     defaultConfig {
@@ -42,7 +42,7 @@ afterEvaluate {
             from components.findByName(variant.name)
 
             groupId = 'io.fastturtle'
-            artifactId = 'BmpWaterMark'
+            artifactId = 'BmpWatermark'
             version = '1.0.9'
         }
 

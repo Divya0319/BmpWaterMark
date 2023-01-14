@@ -1,4 +1,4 @@
-package io.fastturtle.BmpWaterMark;
+package io.fastturtle.BmpWatermark;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat;
  * @Date: 08-Jan-23
  */
 
-public class WaterMarkProvider {
+public class WatermarkProvider {
     private final Context context;
 
     // required parameters
@@ -33,7 +33,7 @@ public class WaterMarkProvider {
     private final int xCoordinate;
     private int yCoordinate;
 
-    public WaterMarkProvider(Builder builder) {
+    public WatermarkProvider(Builder builder) {
         this.context = builder.context;
         this.waterMarkedBitmap = builder.bitmap;
         this.waterMarkText = builder.waterMarkText;
@@ -242,8 +242,8 @@ public class WaterMarkProvider {
             return this;
         }
 
-        public WaterMarkProvider build() {
-            return new WaterMarkProvider(this);
+        public WatermarkProvider build() {
+            return new WatermarkProvider(this);
         }
 
     }
