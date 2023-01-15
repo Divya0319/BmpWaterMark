@@ -3,7 +3,7 @@ BmpWatermark
 ------------
 An Android Library built to watermark a bitmap given to it.
 
-![Demo](https://github.com/Divya0319/BmpWatermark/tree/master/demo/watermarking_demo.gif)
+![Demo](https://github.com/Divya0319/BmpWatermark/blob/master/demo/watermarking_demo.gif)
 
 Download
 --------
