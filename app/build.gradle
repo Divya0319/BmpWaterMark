@@ -36,11 +36,13 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+
 
     /**
      *  for scenario when module is a part of project
      */
-//    implementation project(path: ':BmpWatermark')
+    implementation project(path: ':BmpWatermark')
 
     /**
      *  for scenario when module's aar file is placed in libs folder
@@ -49,7 +51,7 @@ dependencies {
 
 //    implementation 'com.github.Divya0319:BmpWaterMark:1.0.10'
 
-    // MavenCentral depedency for BmpWatermark
-    implementation 'io.github.divya0319:BmpWatermark:1.1.0'
+    // MavenCentral dependency for BmpWatermark
+//    implementation 'io.github.divya0319:BmpWatermark:1.1.0'
 
 }
