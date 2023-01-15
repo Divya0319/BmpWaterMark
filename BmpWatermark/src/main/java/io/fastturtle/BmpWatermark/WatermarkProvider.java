@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 
 import androidx.annotation.ColorRes;
@@ -78,6 +77,8 @@ public class WatermarkProvider {
         int w = waterMarkedBitmap.getWidth();
         int h = waterMarkedBitmap.getHeight();
 
+        float aspectRatio = h / (float) w;
+
         Canvas canvas = new Canvas(waterMarkedBitmap);
         canvas.drawBitmap(waterMarkedBitmap, 0f, 0f, null);
 
@@ -99,7 +100,6 @@ public class WatermarkProvider {
             }
         }
 
-        Log.d("Hindi?", isHindi + "");
         if (textSize == -1) {
             /*
              * Follows binary search to find the text size which fits bitmap diagonal properly
@@ -135,25 +135,24 @@ public class WatermarkProvider {
             alpha = 255;
         }
         paint.setAlpha(alpha);
-        Log.d("Bitmap height", h + "");
 
         if (rotationAngle == -1.0D) {
 
-            if (isHindi) {
-                yCoordinate = 120;
+            if (yCoordinate == -1)
+                yCoordinate = 100;
+            if (aspectRatio <= 0.57) {
+                canvas.rotate((float) (angleOfRotation - 0.1 * angleOfRotation), xCoordinate, yCoordinate);
+                canvas.drawText(waterMarkText, xCoordinate, yCoordinate, paint);
+                canvas.rotate(-(float) (angleOfRotation - 0.1 * angleOfRotation), xCoordinate, yCoordinate);
             } else {
-                yCoordinate = 60;
+                canvas.rotate((float) (angleOfRotation + 0.040 * angleOfRotation), xCoordinate, yCoordinate);
+                canvas.drawText(waterMarkText, xCoordinate, yCoordinate, paint);
+                canvas.rotate(-(float) (angleOfRotation + 0.040 * angleOfRotation), xCoordinate, yCoordinate);
             }
-            canvas.rotate((float) angleOfRotation, xCoordinate, yCoordinate);
-            canvas.drawText(waterMarkText, xCoordinate, yCoordinate, paint);
-            canvas.rotate(-(float) (angleOfRotation), xCoordinate, yCoordinate);
 
         } else {
-            if (isHindi) {
-                yCoordinate = 120;
-            } else {
-                yCoordinate = 60;
-            }
+            if (yCoordinate == -1)
+                yCoordinate = 100;
             canvas.rotate((float) rotationAngle, xCoordinate, yCoordinate);
             canvas.drawText(waterMarkText, xCoordinate, yCoordinate, paint);
             canvas.rotate(-((float) rotationAngle), xCoordinate, yCoordinate);
@@ -203,8 +202,8 @@ public class WatermarkProvider {
         private double rotationAngle = -1.0D;
         private @ColorRes
         int color = R.color.red_for_watermark;
-        private int xCoordinate = 0;
-        private int yCoordinate;
+        private int xCoordinate = -1;
+        private int yCoordinate = -1;
 
         public Builder(Context context, Bitmap bitmap, String waterMarkText) {
             this.context = context;
