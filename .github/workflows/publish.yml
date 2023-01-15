@@ -20,6 +20,8 @@ jobs:
         with:
           distribution: adopt
           java-version: 8
+      - name: Grant Permission to Execute Gradle
+        run: chmod +x gradlew
 
         # Builds the release artifacts of the library
       - name: Release build
