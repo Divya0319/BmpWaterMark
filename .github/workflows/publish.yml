@@ -1,15 +1,15 @@
 name: Publish
 
 on:
-  workflow_run:
-    workflows: ["ReleaseStart"]
-    types:
-      - completed
+   release:
+    # We'll run this workflow when a new GitHub release is created
+    types: [released]
+
 
 jobs:
   publish:
     name: Release build and publish
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
