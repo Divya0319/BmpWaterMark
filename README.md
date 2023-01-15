@@ -1,6 +1,9 @@
 BmpWatermark
 ------------
 ------------
+
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.divya0319/BmpWatermark.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.divya0319%22%20AND%20a:%22BmpWatermark%22)
+
 An Android Library built to watermark a bitmap given to it.
 
 ![Demo](https://github.com/Divya0319/BmpWatermark/blob/master/demo/watermarking_demo.gif)
