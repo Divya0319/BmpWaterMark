@@ -29,7 +29,7 @@ public class WatermarkProvider {
     private final double rotationAngle;
     private final @ColorRes
     int color;
-    private final int xCoordinate;
+    private int xCoordinate;
     private int yCoordinate;
 
     public WatermarkProvider(Builder builder) {
@@ -136,23 +136,31 @@ public class WatermarkProvider {
         }
         paint.setAlpha(alpha);
 
+        int[] screenDim = getScreenWidthAndHeight();
+
         if (rotationAngle == -1.0D) {
 
             if (yCoordinate == -1)
-                yCoordinate = 100;
-            if (aspectRatio <= 0.57) {
-                canvas.rotate((float) (angleOfRotation - 0.1 * angleOfRotation), xCoordinate, yCoordinate);
+                yCoordinate = (int) ((100 / 2296f) * screenDim[1]);
+            if (xCoordinate == -1)
+                xCoordinate = 0;
+
+            if (aspectRatio >= 0.45 && aspectRatio <= 0.90) {
+                canvas.rotate((float) (angleOfRotation - (0.1 * angleOfRotation)), xCoordinate, yCoordinate);
                 canvas.drawText(waterMarkText, xCoordinate, yCoordinate, paint);
-                canvas.rotate(-(float) (angleOfRotation - 0.1 * angleOfRotation), xCoordinate, yCoordinate);
+                canvas.rotate(-(float) (angleOfRotation - (0.1 * angleOfRotation)), xCoordinate, yCoordinate);
             } else {
-                canvas.rotate((float) (angleOfRotation + 0.040 * angleOfRotation), xCoordinate, yCoordinate);
+                canvas.rotate((float) (angleOfRotation + (0.04 * angleOfRotation)), xCoordinate, yCoordinate);
                 canvas.drawText(waterMarkText, xCoordinate, yCoordinate, paint);
-                canvas.rotate(-(float) (angleOfRotation + 0.040 * angleOfRotation), xCoordinate, yCoordinate);
+                canvas.rotate(-(float) (angleOfRotation + (0.04 * angleOfRotation)), xCoordinate, yCoordinate);
             }
 
         } else {
             if (yCoordinate == -1)
-                yCoordinate = 100;
+                yCoordinate = (int) ((100 / 2296f) * screenDim[1]);
+            if (xCoordinate == -1)
+                xCoordinate = 0;
+
             canvas.rotate((float) rotationAngle, xCoordinate, yCoordinate);
             canvas.drawText(waterMarkText, xCoordinate, yCoordinate, paint);
             canvas.rotate(-((float) rotationAngle), xCoordinate, yCoordinate);
