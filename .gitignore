@@ -6,6 +6,7 @@
 /build
 app/build
 BmpWatermark/build
+BmpWatermark/jitpack.yml
 /captures
 .externalNativeBuild
 app/release/*
