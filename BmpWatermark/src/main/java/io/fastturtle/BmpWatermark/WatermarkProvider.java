@@ -11,9 +11,10 @@ import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import java.lang.reflect.Field;
+
 /**
- * @Author: Divya Gupta
- * @Date: 08-Jan-23
+ * Generates watermark over a bitmap. The placement, color, size, and transparency of watermark can be customised.
  */
 
 public class WatermarkProvider {
@@ -32,6 +33,9 @@ public class WatermarkProvider {
     private int xCoordinate;
     private int yCoordinate;
 
+    /**
+     * @param builder builder instance containing context, bitmap and watermark text
+     */
     public WatermarkProvider(Builder builder) {
         this.context = builder.context;
         this.waterMarkedBitmap = builder.bitmap;
@@ -44,34 +48,58 @@ public class WatermarkProvider {
         this.yCoordinate = builder.yCoordinate;
     }
 
+    /**
+     * @return text used for watermarking
+     */
     public String getWaterMarkText() {
         return waterMarkText;
     }
 
+    /**
+     * @return transparency level of watermark (0-255)
+     */
     public int getAlpha() {
         return alpha;
     }
 
+    /**
+     * @return size of watermark text as a integer value
+     */
     public int getTextSize() {
         return textSize;
     }
 
+    /**
+     * @return angle of rotation of watermark text
+     */
     public double getRotationAngle() {
         return rotationAngle;
     }
 
+    /**
+     * @return id of color used for watermark
+     */
     public int getColor() {
         return color;
     }
 
+    /**
+     * @return x-coordinate of top-left of watermark
+     */
     public int getxCoordinate() {
         return xCoordinate;
     }
 
+    /**
+     * @return y-coordinate of top-left of watermark
+     */
     public int getyCoordinate() {
         return yCoordinate;
     }
 
+    /**
+     * @return resulting watermarked bitmap, after all customisations being applied
+     */
     public Bitmap getWaterMarkedBitmap() {
         waterMarkedBitmap = createScaledBitmapWithScreenWidth(waterMarkedBitmap);
         int w = waterMarkedBitmap.getWidth();
@@ -173,6 +201,11 @@ public class WatermarkProvider {
         Generates scaled down version of bitmap provided, with width of bitmap equal to screen size, and
         height generated based on screen width (maintaining aspect ratio of bitmap)
      */
+
+    /**
+     * @param bmp the bitmap to be scaled down
+     * @return scaled down version of bitmap passed
+     */
     public Bitmap createScaledBitmapWithScreenWidth(Bitmap bmp) {
         int[] screenDims = getScreenWidthAndHeight();
         float newHeight = (bmp.getHeight() / (float) bmp.getWidth()) * (float) screenDims[0];
@@ -180,24 +213,36 @@ public class WatermarkProvider {
         return Bitmap.createScaledBitmap(bmp, screenDims[0], (int) newHeight, false);
     }
 
+    /**
+     * @return an array with first element being device screen width, and second element being
+     * device screen height
+     */
     public int[] getScreenWidthAndHeight() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((AppCompatActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return new int[]{displayMetrics.widthPixels, displayMetrics.heightPixels};
     }
 
+    /**
+     * @param sizeInSp size passed as sp, to be converted to pixels
+     * @return size converted to pixel
+     */
     public float sp2px(float sizeInSp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 sizeInSp, context.getResources().getDisplayMetrics());
     }
 
+    /**
+     * @param px size passed as pixel, to be converted to dp
+     * @return size converted to dp
+     */
     public int pixelsToDp(float px) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     /**
-     * Builder pattern
+     * Builder class which builds watermark step-by-step
      */
 
     public static class Builder {
@@ -213,6 +258,12 @@ public class WatermarkProvider {
         private int xCoordinate = -1;
         private int yCoordinate = -1;
 
+        /**
+         *
+         * @param context used for accessing bitmap helper classes, and resource classes
+         * @param bitmap bitmap tp be watermarked
+         * @param waterMarkText text to be shown for watermark
+         */
         public Builder(Context context, Bitmap bitmap, String waterMarkText) {
             this.context = context;
             this.bitmap = bitmap;
@@ -234,21 +285,37 @@ public class WatermarkProvider {
             return this;
         }
 
+        /**
+         *
+         * @param color sets a custom color for watermark text. Must be a color reference from colors.xml
+         */
         public Builder setColor(int color) {
             this.color = color;
             return this;
         }
 
+        /**
+         *
+         * @param xCoordinate sets a custom starting (top-left) x-position for watermark text.
+         */
         public Builder setxCoordinate(int xCoordinate) {
             this.xCoordinate = xCoordinate;
             return this;
         }
 
+        /**
+         *
+         * @param yCoordinate sets a custom starting (top-left) y-position for watermark text.
+         */
         public Builder setyCoordinate(int yCoordinate) {
             this.yCoordinate = yCoordinate;
             return this;
         }
 
+        /**
+         *
+         * @return instance of WatermarkProvider which contains watermarked bitmap
+         */
         public WatermarkProvider build() {
             return new WatermarkProvider(this);
         }

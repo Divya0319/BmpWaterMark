@@ -14,6 +14,24 @@ task androidSourcesJar(type: Jar) {
     }
 }
 
+task releaseJavadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    android.libraryVariants.all { variant ->
+        if (variant.name == 'release') {
+            owner.classpath += variant.javaCompileProvider.get().classpath
+        }
+    }
+    exclude '**/R.html', '**/R.*.html', '**/index.html'
+}
+
+task packageJavadoc(type: Jar, dependsOn: 'releaseJavadoc') {
+    archiveClassifier.set("javadoc")
+    from {
+        releaseJavadoc.destinationDir
+    }
+}
+
 artifacts {
     archives androidSourcesJar
 }
@@ -39,7 +57,7 @@ afterEvaluate {
                 }
 
                 artifact androidSourcesJar
-//                artifact javadocJar
+                artifact packageJavadoc
 
                 // Mostly self-explanatory metadata
                 pom {
