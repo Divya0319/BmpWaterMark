@@ -7,7 +7,7 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "com.fastturtle.helloworld"
+        applicationId "com.fastturtlePractice.BmpWaterMarkTesting"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 38
@@ -42,16 +42,21 @@ dependencies {
     /**
      *  for scenario when module is a part of project
      */
-    implementation project(path: ':BmpWatermark')
+//    implementation project(path: ':BmpWatermark')
+
+    /**
+     *  for scenario when publishing to mavenLocal
+     */
+//    implementation 'io.fastturtle:BmpWatermark:1.0.1'
 
     /**
      *  for scenario when module's aar file is placed in libs folder
      */
-//    implementation files('libs/BmpWaterMark.aar')
+//    implementation files('libs/BmpWatermark.aar')
 
 //    implementation 'com.github.Divya0319:BmpWaterMark:1.0.10'
 
     // MavenCentral dependency for BmpWatermark
-//    implementation 'io.github.divya0319:BmpWatermark:1.1.0'
+    implementation 'io.github.divya0319:BmpWatermark:1.1.3.1'
 
 }

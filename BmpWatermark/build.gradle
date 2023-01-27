@@ -43,15 +43,47 @@ dependencies {
 //
 //            groupId = 'io.fastturtle'
 //            artifactId = 'BmpWatermark'
-//            version = '1.0.9'
+//            version = '1.0.1'
+//
+//            artifact androidSourcesJar
+//            artifact packageJavadoc
 //        }
 //
 //    }
 //}
 
+//task releaseJavadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    android.libraryVariants.all { variant ->
+//        if (variant.name == 'release') {
+//            owner.classpath += variant.javaCompileProvider.get().classpath
+//        }
+//    }
+//    exclude '**/R.html', '**/R.*.html', '**/index.html'
+//}
+//
+//task androidSourcesJar(type: Jar) {
+//    archiveClassifier.set('sources')
+//    if (project.plugins.findPlugin("com.android.library")) {
+//        // For Android libraries
+//        from android.sourceSets.main.java.srcDirs
+//    } else {
+//        // For pure Kotlin libraries, in case you have them
+//        from sourceSets.main.java.srcDirs
+//    }
+//}
+//
+//task packageJavadoc(type: Jar, dependsOn: 'releaseJavadoc') {
+//    archiveClassifier.set("javadoc")
+//    from {
+//        releaseJavadoc.destinationDir
+//    }
+//}
+
 ext {
     PUBLISH_GROUP_ID = 'io.github.divya0319'
-    PUBLISH_VERSION = '1.1.3.2'
+    PUBLISH_VERSION = '1.1.3.3'
     PUBLISH_ARTIFACT_ID = 'BmpWatermark'
 }
 
