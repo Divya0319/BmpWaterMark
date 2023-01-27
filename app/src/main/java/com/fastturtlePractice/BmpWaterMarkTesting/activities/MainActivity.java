@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 watermarkBuilder = new WatermarkProvider.Builder(MainActivity.this, selectedBitmap, getString(R.string.english_text));
 
                 WatermarkProvider wmp = watermarkBuilder
-                        .setColor(io.fastturtle.BmpWatermark.R.color.red_for_watermark)
+                        .setColor(R.color.blue_500)
 //                .setAlpha(50)
 //                .setxCoordinate(0)
 //                .setyCoordinate(120)
