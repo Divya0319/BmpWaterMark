@@ -261,7 +261,7 @@ public class WatermarkProvider {
         /**
          *
          * @param context used for accessing bitmap helper classes, and resource classes
-         * @param bitmap bitmap tp be watermarked
+         * @param bitmap bitmap to be watermarked
          * @param waterMarkText text to be shown for watermark
          */
         public Builder(Context context, Bitmap bitmap, String waterMarkText) {
@@ -269,17 +269,27 @@ public class WatermarkProvider {
             this.bitmap = bitmap;
             this.waterMarkText = waterMarkText;
         }
-
+		/**
+         *
+         * @param alpha sets a transparency level for watermark text. Value must be between 0 to 255, 0 being invisible, 255 being fully visible.
+         */
         public Builder setAlpha(int alpha) {
             this.alpha = alpha;
             return this;
         }
-
+		/**
+         *
+         * @param textSize sets a custom watermark text size. Value must be in sp to work properly.
+         */
         public Builder setTextSize(int textSize) {
             this.textSize = textSize;
             return this;
         }
 
+		/**
+         *
+         * @param rotationAngle sets a custom angle of rotation for watermark text. Value must be in degrees to work properly.
+         */
         public Builder setRotationAngle(double rotationAngle) {
             this.rotationAngle = rotationAngle;
             return this;
