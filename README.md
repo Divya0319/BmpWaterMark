@@ -19,14 +19,14 @@ repositories {
     google()
 }
 
-implementation 'io.github.divya0319:BmpWatermark:1.2.3'
+implementation 'io.github.divya0319:BmpWatermark:1.2.3.2'
 ```
 Or Maven:
 ```
 <dependency>
   <groupId>io.github.divya0319</groupId>
   <artifactId>BmpWatermark</artifactId>
-  <version>1.2.3</version>
+  <version>1.2.3.2</version>
   <type>aar</type>
 </dependency>
 ```
